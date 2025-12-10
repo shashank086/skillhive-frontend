@@ -3,15 +3,15 @@ import { createContext, useContext, useState, useEffect } from 'react'
 const AuthContext = createContext(null)
 
 export const AuthProvider = ({ children }) => {
-  const [user, setUser] = useState(null)
-
-  // Load user from localStorage on mount (for demo purposes)
-  useEffect(() => {
-    const savedUser = localStorage.getItem('user')
-    if (savedUser) {
-      setUser(JSON.parse(savedUser))
+  const [user, setUser] = useState(() => {
+    try {
+      const savedUser = localStorage.getItem('user')
+      return savedUser ? JSON.parse(savedUser) : null
+    } catch (error) {
+      console.error('Error parsing user from localStorage', error)
+      return null
     }
-  }, [])
+  })
 
   const login = (userData) => {
     setUser(userData)
