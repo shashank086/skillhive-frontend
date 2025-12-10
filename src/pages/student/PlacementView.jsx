@@ -2,6 +2,8 @@ import { useState, useEffect } from 'react'
 import { Briefcase, Calendar, MapPin, Clock, ExternalLink, Building, FileText, Image as ImageIcon } from 'lucide-react'
 import { useAuth } from '../../context/AuthContext'
 
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000'
+
 const PlacementView = () => {
     const { user } = useAuth()
     const [placements, setPlacements] = useState([])

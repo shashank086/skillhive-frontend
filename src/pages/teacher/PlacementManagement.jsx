@@ -31,13 +31,19 @@ const PlacementManagement = () => {
             setLoading(true)
             const response = await fetch(`${API_BASE_URL}/api/placements`)
             if (!response.ok) {
-                throw new Error('Failed to fetch placements')
+                const errorText = await response.text()
+                try {
+                    const errorJson = JSON.parse(errorText)
+                    throw new Error(errorJson.message || 'Failed to fetch placements')
+                } catch (e) {
+                    throw new Error(`Error ${response.status}: ${response.statusText}`)
+                }
             }
             const data = await response.json()
             setPlacements(data)
         } catch (err) {
             console.error('Error fetching placements:', err)
-            setError('Failed to load placements')
+            setError(err.message || 'Failed to load placements')
         } finally {
             setLoading(false)
         }
