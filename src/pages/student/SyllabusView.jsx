@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import { BookOpen, Calendar, Clock, CheckCircle, Award, FileText, ChevronDown, ChevronUp } from 'lucide-react'
 
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000'
+const API_BASE_URL = (import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000').replace(/\/$/, '')
 
 const SyllabusView = () => {
   const [syllabi, setSyllabi] = useState([])

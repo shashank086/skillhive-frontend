@@ -2,10 +2,7 @@ import { useState, useEffect } from 'react'
 import { BookOpen, Video, FileText, TrendingUp, Clock, Activity } from 'lucide-react'
 import { useAuth } from '../../context/AuthContext'
 
-// Use backend on port 8000 by default; allow override via env
-const API_BASE_URL =
-  (import.meta.env.VITE_API_BASE_URL && import.meta.env.VITE_API_BASE_URL.replace(/\/$/, '')) ||
-  'http://localhost:8000'
+const API_BASE_URL = (import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000').replace(/\/$/, '')
 
 const StudentOverview = () => {
   const { user } = useAuth()

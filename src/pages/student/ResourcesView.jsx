@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import { FileText, Download, Search, Filter, ExternalLink } from 'lucide-react'
 import { useAuth } from '../../context/AuthContext'
 
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000'
+const API_BASE_URL = (import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000').replace(/\/$/, '')
 
 const ResourcesView = () => {
     const { user } = useAuth()

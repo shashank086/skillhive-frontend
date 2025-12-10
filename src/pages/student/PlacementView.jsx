@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react'
 import { Briefcase, Calendar, MapPin, Clock, ExternalLink, Building, FileText, Image as ImageIcon } from 'lucide-react'
 import { useAuth } from '../../context/AuthContext'
 
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000'
+const API_BASE_URL = (import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000').replace(/\/$/, '')
 
 const PlacementView = () => {
     const { user } = useAuth()
@@ -16,16 +16,26 @@ const PlacementView = () => {
 
     const fetchPlacements = async () => {
         try {
-            const response = await fetch(`${API_BASE_URL}/api/placements`)
+            console.log(`Fetching placements from: ${API_BASE_URL}/api/placements`)
+            const response = await fetch(`${API_BASE_URL}/api/placements`, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    // Add any auth headers if needed in future
+                }
+            })
+
             if (!response.ok) {
-                throw new Error('Failed to fetch placements')
+                const errorText = await response.text().catch(() => response.statusText);
+                throw new Error(errorText || `Failed to fetch placements: ${response.status}`);
             }
+
             const data = await response.json()
-            setPlacements(data)
+            setPlacements(Array.isArray(data) ? data : [])
             setLoading(false)
         } catch (err) {
             console.error('Error fetching placements:', err)
-            setError('Failed to load placement drives. Please try again later.')
+            setError(err.message || 'Failed to load placement drives. Please try again later.')
             setLoading(false)
         }
     }
